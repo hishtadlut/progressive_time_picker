@@ -1,8 +1,10 @@
-import 'dart:math';
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+
 import '../decoration/time_picker_clock_number_decoration.dart';
-import '../decoration/time_picker_sector_decoration.dart';
 import '../decoration/time_picker_decoration.dart';
+import '../decoration/time_picker_sector_decoration.dart';
 import '../src/utils.dart';
 
 class BaseTimePainter extends CustomPainter {
@@ -27,7 +29,7 @@ class BaseTimePainter extends CustomPainter {
 
     /// we need this in the parent to calculate if the user clicks on the circumference
     center = Offset(size.width / 2, size.height / 2);
-    radius = min(size.width / 2, size.height / 2) - pickerStrokeWidth;
+    radius = math.min(size.width / 2, size.height / 2) - pickerStrokeWidth;
 
     assert(radius > 0);
 
@@ -48,14 +50,12 @@ class BaseTimePainter extends CustomPainter {
     if (primarySectors > 0) {
       _paintSectors(
         primarySectors,
-        decoration.primarySectorsDecoration ??
-            TimePickerSectorDecoration(size: 6),
+        decoration.primarySectorsDecoration ?? TimePickerSectorDecoration(size: 6),
         canvas,
       );
     }
 
-    if (decoration.clockNumberDecoration != null &&
-        decoration.clockNumberDecoration!.showNumberIndicators)
+    if (decoration.clockNumberDecoration != null && decoration.clockNumberDecoration!.showNumberIndicators)
       _drawNumberIndicators(
         canvas,
         size,
@@ -116,27 +116,21 @@ class BaseTimePainter extends CustomPainter {
     TimePickerClockNumberDecoration decoration,
     ClockTimeFormat clockTimeFormat,
   ) {
-    int getIncrementCount = 15 *
-        (24 ~/ decoration.clockTimeFormat.value) *
-        decoration.clockIncrementHourFormat.value;
+    int getIncrementCount = 15 * (24 ~/ decoration.clockTimeFormat.value) * decoration.clockIncrementHourFormat.value;
 
     var centerX = size.width / 2;
     var centerY = size.height / 2;
 
     for (int i = 0; i < 360; i = i + getIncrementCount) {
-      var x1 = centerX + (centerX * 0.42) * sin(i * pi / 180);
-      var y1 = -centerY + (centerX * 0.42) * cos(i * pi / 180);
+      var x1 = centerX + (centerX * 0.42) * math.sin(i * math.pi / 180);
+      var y1 = -centerY + (centerX * 0.42) * math.cos(i * math.pi / 180);
       var tp = getIndicatorText(
-        i == 0
-            ? decoration.clockTimeFormat.value
-            : ((i / 15) * (decoration.clockTimeFormat.value / 24)).toInt(),
+        i == 0 ? decoration.clockTimeFormat.value : ((i / 15) * (decoration.clockTimeFormat.value / 24)).toInt(),
         decoration.textStyle ??
             decoration.getDefaultTextStyle().copyWith(
                   fontSize: decoration.clockIncrementHourFormat.value == 1
                       ? 10
-                      : (decoration.defaultFontSize *
-                          decoration.scaleFactor *
-                          decoration.textScaleFactor),
+                      : (decoration.defaultFontSize * decoration.scaleFactor * decoration.textScaleFactor),
                 ),
       );
       tp.layout();
@@ -154,6 +148,7 @@ class BaseTimePainter extends CustomPainter {
         ..color = color
         ..strokeCap = roundedCap ? StrokeCap.round : StrokeCap.butt
         ..style = style ?? PaintingStyle.stroke
+        ..strokeJoin = StrokeJoin.bevel
         ..strokeWidth = width ?? pickerStrokeWidth;
 
   TextPainter getIndicatorText(var text, TextStyle style) {

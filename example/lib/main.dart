@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:progressive_time_picker/progressive_time_picker.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:progressive_time_picker/progressive_time_picker.dart';
 
 void main() {
   /// To set fixed device orientation
@@ -31,8 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ClockTimeFormat _clockTimeFormat = ClockTimeFormat.twentyFourHours;
-  ClockIncrementTimeFormat _clockIncrementTimeFormat =
-      ClockIncrementTimeFormat.fiveMin;
+  ClockIncrementTimeFormat _clockIncrementTimeFormat = ClockIncrementTimeFormat.fiveMin;
 
   PickedTime _inBedTime = PickedTime(h: 0, m: 0);
   PickedTime _outBedTime = PickedTime(h: 8, m: 0);
@@ -61,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF141925),
+      backgroundColor: Colors.pink,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -82,11 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
               disabledRangeColor: Colors.grey,
               errorColor: Colors.red,
             ),
-            height: 260.0,
-            width: 260.0,
+            height: 280.0,
+            width: 280.0,
             onSelectionChange: _updateLabels,
-            onSelectionEnd: (start, end, isDisableRange) => print(
-                'onSelectionEnd => init : ${start.h}:${start.m}, end : ${end.h}:${end.m}, isDisableRange: $isDisableRange'),
+            onSelectionEnd: (start, end, isDisableRange) =>
+                print('onSelectionEnd => init : ${start.h}:${start.m}, end : ${end.h}:${end.m}, isDisableRange: $isDisableRange'),
             primarySectors: _clockTimeFormat.value,
             secondarySectors: _clockTimeFormat.value * 2,
             decoration: TimePickerDecoration(
@@ -165,9 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                _isSleepGoal
-                    ? "Above Sleep Goal (>=8) 😇"
-                    : 'below Sleep Goal (<=8) 😴',
+                _isSleepGoal ? "Above Sleep Goal (>=8) 😇" : 'below Sleep Goal (<=8) 😴',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,

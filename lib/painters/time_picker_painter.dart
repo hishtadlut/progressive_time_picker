@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../painters/picker_painter.dart';
+
 import '../decoration/time_picker_decoration.dart';
-import 'base_time_painter.dart';
+import '../painters/picker_painter.dart';
 import '../src/utils.dart';
+import 'base_time_painter.dart';
 
 typedef SelectionChanged<T> = void Function(T a, T b, bool? valid);
 
@@ -81,11 +82,9 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
   /// that way we will be able to keep the selection constant when moving
   late int _differenceFromInitPoint;
 
-  bool get isBothHandlersSelected =>
-      _isEndHandlerSelected && _isInitHandlerSelected;
+  bool get isBothHandlersSelected => _isEndHandlerSelected && _isInitHandlerSelected;
 
-  bool get isNoHandlersSelected =>
-      !_isEndHandlerSelected && !_isInitHandlerSelected;
+  bool get isNoHandlersSelected => !_isEndHandlerSelected && !_isInitHandlerSelected;
 
   @override
   void initState() {
@@ -108,8 +107,7 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
   Widget build(BuildContext context) {
     return RawGestureDetector(
       gestures: <Type, GestureRecognizerFactory>{
-        CustomPanGestureRecognizer:
-            GestureRecognizerFactoryWithHandlers<CustomPanGestureRecognizer>(
+        CustomPanGestureRecognizer: GestureRecognizerFactoryWithHandlers<CustomPanGestureRecognizer>(
           () => CustomPanGestureRecognizer(
             onPanDown: _onPanDown,
             onPanUpdate: _onPanUpdate,
@@ -119,16 +117,13 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
         ),
       },
       child: MouseRegion(
-        cursor: kIsWeb
-            ? widget.pickerDecoration.mouseCursorForWeb
-            : SystemMouseCursors.none,
+        cursor: kIsWeb ? widget.pickerDecoration.mouseCursorForWeb : SystemMouseCursors.none,
         child: CustomPaint(
           painter: BaseTimePainter(
             decoration: widget.pickerDecoration,
             primarySectors: widget.primarySectors,
             secondarySectors: widget.secondarySectors,
-            pickerStrokeWidth:
-                widget.pickerDecoration.sweepDecoration.pickerStrokeWidth,
+            pickerStrokeWidth: widget.pickerDecoration.sweepDecoration.pickerStrokeWidth,
           ),
           foregroundPainter: _painter,
           child: Padding(
@@ -142,10 +137,8 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
 
   void _calculatePaintData() {
     var clockTimeDivision = getClockTimeFormatDivision(
-      widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ??
-          ClockTimeFormat.twentyFourHours,
-      widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ??
-          ClockIncrementTimeFormat.fiveMin,
+      widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ?? ClockTimeFormat.twentyFourHours,
+      widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ?? ClockIncrementTimeFormat.fiveMin,
     );
     var initPercent = valueToPercentage(widget.init, clockTimeDivision);
     var endPercent = valueToPercentage(widget.end, clockTimeDivision);
@@ -156,12 +149,9 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
     _sweepAngle = percentageToRadians(sweep.abs());
 
     if (widget.disableTimeStart != null && widget.disableTimeEnd != null) {
-      var disableTimeInitPercentage =
-          valueToPercentage(widget.disableTimeStart!, clockTimeDivision);
-      var disableTimeEndPercentage =
-          valueToPercentage(widget.disableTimeEnd!, clockTimeDivision);
-      var disabledSweep =
-          getSweepAngle(disableTimeInitPercentage, disableTimeEndPercentage);
+      var disableTimeInitPercentage = valueToPercentage(widget.disableTimeStart!, clockTimeDivision);
+      var disableTimeEndPercentage = valueToPercentage(widget.disableTimeEnd!, clockTimeDivision);
+      var disabledSweep = getSweepAngle(disableTimeInitPercentage, disableTimeEndPercentage);
 
       _disableTimeStartAngle = percentageToRadians(disableTimeInitPercentage);
       _disableTimeEndAngle = percentageToRadians(disableTimeEndPercentage);
@@ -203,19 +193,15 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
     var angle = coordinatesToRadians(_painter.center, position);
     var percentage = radiansToPercentage(angle);
     var clockTimeDivision = getClockTimeFormatDivision(
-      widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ??
-          ClockTimeFormat.twentyFourHours,
-      widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ??
-          ClockIncrementTimeFormat.fiveMin,
+      widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ?? ClockTimeFormat.twentyFourHours,
+      widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ?? ClockIncrementTimeFormat.fiveMin,
     );
 
     var newValue = percentageToValue(percentage, clockTimeDivision);
 
     if (isBothHandlersSelected) {
-      var newValueInit =
-          (newValue - _differenceFromInitPoint) % clockTimeDivision;
-      var newValueEnd =
-          (widget.end + (newValueInit - widget.init)) % clockTimeDivision;
+      var newValueInit = (newValue - _differenceFromInitPoint) % clockTimeDivision;
+      var newValueEnd = (widget.end + (newValueInit - widget.init)) % clockTimeDivision;
 
       widget.onSelectionChange(newValueInit, newValueEnd, null);
       if (isPanEnd) {
@@ -243,14 +229,12 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
     var position = renderBox.globalToLocal(details);
 
     _isInitHandlerSelected = widget.isInitHandlerSelectable
-        ? isPointInsideCircle(position, _painter.initHandlerCenterLocation,
-            widget.pickerDecoration.initHandlerDecoration.handlerOutterRadius)
+        ? isPointInsideCircle(position, _painter.initHandlerCenterLocation, widget.pickerDecoration.initHandlerDecoration.handlerOutterRadius)
         : false;
 
     if (!_isInitHandlerSelected) {
       _isEndHandlerSelected = widget.isEndHandlerSelectable
-          ? isPointInsideCircle(position, _painter.endHandlerCenterLocation,
-              widget.pickerDecoration.endHandlerDecoration.handlerOutterRadius)
+          ? isPointInsideCircle(position, _painter.endHandlerCenterLocation, widget.pickerDecoration.endHandlerDecoration.handlerOutterRadius)
           : false;
 
       if (isNoHandlersSelected && widget.isSelectableHandlerMoveAble) {
@@ -262,25 +246,18 @@ class _TimePickerPainterState extends State<TimePickerPainter> {
             angle,
             _startAngle,
             _sweepAngle,
-            widget.pickerDecoration.clockNumberDecoration
-                    ?.clockIncrementTimeFormat ??
-                ClockIncrementTimeFormat.fiveMin,
+            widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ?? ClockIncrementTimeFormat.fiveMin,
           )) {
             _isEndHandlerSelected = true;
             _isInitHandlerSelected = true;
             var positionPercentage = radiansToPercentage(angle);
             var clockTimeDivision = getClockTimeFormatDivision(
-              widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ??
-                  ClockTimeFormat.twentyFourHours,
-              widget.pickerDecoration.clockNumberDecoration
-                      ?.clockIncrementTimeFormat ??
-                  ClockIncrementTimeFormat.fiveMin,
+              widget.pickerDecoration.clockNumberDecoration?.clockTimeFormat ?? ClockTimeFormat.twentyFourHours,
+              widget.pickerDecoration.clockNumberDecoration?.clockIncrementTimeFormat ?? ClockIncrementTimeFormat.fiveMin,
             );
 
             /// no need to account for negative values, that will be sorted out in the onPanUpdate
-            _differenceFromInitPoint =
-                percentageToValue(positionPercentage, clockTimeDivision) -
-                    widget.init;
+            _differenceFromInitPoint = percentageToValue(positionPercentage, clockTimeDivision) - widget.init;
           }
         }
       }
