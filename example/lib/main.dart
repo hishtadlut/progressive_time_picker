@@ -81,8 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
               disabledRangeColor: Colors.grey,
               errorColor: Colors.red,
             ),
-            height: 280.0,
-            width: 280.0,
+            height: 400.0,
+            width: 400.0,
             onSelectionChange: _updateLabels,
             onSelectionEnd: (start, end, isDisableRange) =>
                 print('onSelectionEnd => init : ${start.h}:${start.m}, end : ${end.h}:${end.m}, isDisableRange: $isDisableRange'),

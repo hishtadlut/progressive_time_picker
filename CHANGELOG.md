@@ -1,3 +1,8 @@
+## 1.0.0
+
+* solve gap issue in outer circle while increase size 
+* update code to latest version.
+
 ## 0.0.9
 
 * Added an isSelectableHandlerMoveAble bool flag to disable the dragging of both handlers.
